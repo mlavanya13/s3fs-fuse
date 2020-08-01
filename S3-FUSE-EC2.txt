@@ -1,0 +1,40 @@
+Pre-Requisite
+---------------------------------------------
+i) Make Sure you have IAM Role (eg: ec2-to-s3)
+ii) Also the EC2 machine should use that IAM Role
+iii) Have S3 bucket (Optional - or you can create it thru CLI)
+
+S3 Mount on EC2
+=================
+
+Installing & Compiling S3FS-FUSE
+==================================
+
+yum -y install automake fuse fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel
+git clone https://github.com/s3fs-fuse/s3fs-fuse.git
+cd s3fs-fuse
+./autogen.sh
+./configure
+make
+make install
+
+Create S3 Bucket thru CLI (Optional if bucke is not available)
+---------------------------------------------------------------
+aws s3 mb s3://<YOUR_BUCKET_NAME>
+
+To Delete
+---------
+aws s3 rb s3://<YOUR_BUCKET_NAME> --force
+
+
+Mounting
+-------------------------
+mkdir /data
+s3fs <bucketname> /data -o iam_role=<IAM-role-name>
+cd /data
+touch welcome.txt
+
+You can verify through AWS S3 Console
+
+
+
